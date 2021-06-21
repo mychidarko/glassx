@@ -1,0 +1,48 @@
+{
+  "name": "glassx",
+  "version": "0.0.1",
+  "description": "React state management with a smiley face.",
+  "main": "dist/index.js",
+  "module": "dist/glassx.esm.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darko-mychi/glassx.git"
+  },
+  "keywords": [
+    "router",
+    "react-router",
+    "reactjs"
+  ],
+  "author": "Michael Darko-Duodu <mychi.darko@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/darko-mychi/glassx/issues"
+  },
+  "homepage": "https://github.com/darko-mychi/glassx#readme",
+  "peerDependencies": {
+    "react": "*",
+    "reactn": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.2",
+    "@types/react-router-dom": "^5.1.7",
+    "react": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.1.0",
+    "typescript": "^4.1.5"
+  },
+  "dependencies": {
+    "reactn": "^2.2.7"
+  }
+}
