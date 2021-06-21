@@ -1,5 +1,5 @@
-import GlassX from ".";
-import { State } from "./@types/store";
+import GlassX from "..";
+import { State } from "../@types/store";
 
 const key = "glassx";
 const storage = window && window.localStorage;
