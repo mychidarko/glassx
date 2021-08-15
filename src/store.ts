@@ -67,9 +67,13 @@ export default class GlassX {
 
     protected static pluginInit(plugins: any[]) {
         plugins.forEach((plugin) => {
-            const p = new plugin();
-            this.plugins.push(p);
-        })
+            if (typeof plugin === "object") {
+                this.plugins.push(plugin);
+            } else {
+                const p = new plugin();
+                this.plugins.push(p);
+            }
+        });
     }
 
     protected static applyPluginHook(hook: Hook, params: any) {
