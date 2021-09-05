@@ -5,7 +5,7 @@ const key = "glassx";
 const isSSR = typeof window === "undefined";
 
 class PersistedState {
-    public storage: any = window.localStorage;
+    public storage: any = isSSR && window.localStorage;
 
     retrieveState() {
         if (isSSR) {
