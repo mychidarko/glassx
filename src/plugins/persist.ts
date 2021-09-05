@@ -2,11 +2,16 @@ import GlassX from "..";
 import { State } from "../@types/store";
 
 const key = "glassx";
+const isSSR = typeof window === "undefined";
 
 class PersistedState {
-    public storage = window.localStorage;
+    public storage: any = window.localStorage;
 
     retrieveState() {
+        if (isSSR) {
+          return;
+        }
+
         const value: string|null = this.storage.getItem(key);
 
         if (!value) {
@@ -34,10 +39,18 @@ class PersistedState {
     }
 
     saveState(state: State) {
+        if (isSSR) {
+            return;
+        }
+
         return this.storage.setItem(key, JSON.stringify(state));
     }
 
     compareState(state: State|string) {
+        if (isSSR) {
+            return;
+        }
+
         state = JSON.stringify(state);
         const cache = this.storage.getItem(key);
 

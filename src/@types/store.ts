@@ -29,4 +29,4 @@ export interface Reducers {
     [key: string]: Reducer<State, any>;
 };
 
-export type Hook = "onReady" | "onSave" | "onRead" | "onReducerInvoke";
+export type Hook = "onReady" | "onSave" | "onRead" | "onReducerInvoke" | "onReset";

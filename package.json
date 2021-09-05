@@ -1,6 +1,6 @@
 {
   "name": "glassx",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React state management with a smiley face.",
   "main": "dist/index.js",
   "module": "dist/glassx.esm.js",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/darko-mychi/glassx.git"
+    "url": "https://github.com/mychidarko/glassx.git"
   },
   "keywords": [
     "router",
@@ -26,9 +26,9 @@
   "author": "Michael Darko-Duodu <mychi.darko@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/darko-mychi/glassx/issues"
+    "url": "https://github.com/mychidarko/glassx/issues"
   },
-  "homepage": "https://github.com/darko-mychi/glassx#readme",
+  "homepage": "https://github.com/mychidarko/glassx#readme",
   "peerDependencies": {
     "react": "*",
     "reactn": "*"

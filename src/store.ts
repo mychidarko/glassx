@@ -123,6 +123,7 @@ export default class GlassX {
     }
 
     public static reset() {
+        this.applyPluginHook("onReset", this._options.defaultState);
         this.set(this._options.defaultState);
     }
 
