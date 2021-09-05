@@ -7,6 +7,14 @@ const isSSR = typeof window === "undefined";
 class PersistedState {
     public storage: any = !isSSR && window.localStorage;
 
+    setStorage(storage: any) {
+        if (typeof storage === "function") {
+            this.storage = storage();
+        } else {
+            this.storage = storage;
+        }
+    }
+
     retrieveState() {
         if (isSSR) {
           return;
