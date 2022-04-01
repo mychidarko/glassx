@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
 import { State } from './store';
 
-export type SetState<StateType = any> = Dispatch<SetStateAction<StateType>>;
+export type SetStore<StateType = any> = Dispatch<SetStateAction<StateType>>;
 
 export type useStore<StateType = any> = (
   key: string
-) => [StateType, SetState<StateType>];
+) => [StateType, SetStore<StateType>];
 
 export type Reducer<State, Payload = any> = (
   prevState: State,
