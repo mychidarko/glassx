@@ -1,45 +1,111 @@
 # GlassX
 
-One more Vue inspired feature, GlassX is a state management solution that follows a syntax close to VueX. GlassX is based on Reactn and actually uses reactn features under the hood, so after creating your glassX store, you can use useGlobal and all other reactn methods to mutate and read your global state.
+GlassX is a simple context based state management library for React and React Native. It provides simple hooks and classes to get you started right away. No need for initializing a context or any such thing. Just start writing and reading your state.
 
-For now, glassX just provides a clean way to break up your components states and reducers into seperate files and import them as modules just as done in VueX.
+GlassX is based on Reactn by Charles Stover but is more tailored towards speed building from the ground up and polished with modern react. It has a ton of handy features with a minimal learning curve which makes it perfect for everyone.
 
-Both updating and reading your state require you to use directly use reactn as done in src/views/Home/Home.jsx since glassX hasn't developed those features due to performance issues.
+## Features
 
-Example state.js
+### No boilerplate
 
-```js
-const state = {
-  initial: "name",
-};
+Right after installation, you can call `GlassX.set` to add items to your global state or use the `useStore` hook. No setup, no initializations.
 
-export default state;
-```
+### Based on react context
 
-Example reducer.js
+GlassX is based on context which makes it super fast and allows it to sit right in your app like a part of the react code itself.
 
-```js
-export const SET_USER = (state, dispatch, payload) => ({
-  user: { ...state.user, ...payload },
-});
-```
+### TypeScript support
 
-Example read and update state:
+GlassX is 100% written in TypeScript which gives it amazing support with most editors and allows you to create and extend types on top of it. You no longer need to stick to state management tools with sub-par type support.
+
+### Supports advanced features
+
+Unlike many other state management libraries out there, GlassX supports features like async reducers, hooks, plugins and modules which allow you to scope your state and reducers to particular portions of your app.
+
+## Example Usage
 
 ```js
-import { useStore } from "glassx";
-import { useTitle } from "@/utils/hooks";
+import { useStore } from 'glassx';
 
 export default function Home() {
-  useTitle("Home");
-
-  const [something, setSomething] = useStore("something");
+  const [something, setSomething] = useStore('something');
 
   setTimeout(() => {
-    setSomething("hobies");
+    setSomething('hobies');
   }, 3000);
   ...
 ```
 
-GlassX is still under development, you can check this page for updates and new features.
+You can also give shape to your state just as done in React, like this:
 
+```tsx
+import { useStore } from 'glassx';
+
+type SomeType = string;
+
+export default function Home() {
+  const [something, setSomething] = useStore<SomeType>('something');
+
+  setTimeout(() => {
+    setSomething('hobies');
+  }, 3000);
+  ...
+```
+
+## Optional Setup
+
+As mentioned earlier, GlassX requires absolute no setup or boilerplate. You only need to do this if you want extra options, plugins, just want to set a default state for your application or want to scope your state using modules.
+
+To get started with this, you simply need to call the `store` method on the GlassX class.
+
+```ts
+const store = GlassX.store({
+  // default State
+  state: {
+    key: 'value'
+  },
+
+  // register reducers to call by name
+  reducers: {
+    reducer_name: (state, payload) => ({
+      stateKey: payload,
+    }),
+  },
+
+  // to use modules
+  modules: [layoutModule],
+
+  // compare state to previous state before updating
+  compareState: true,
+
+  // glassx plugins
+  plugins: [PersistedState],
+});
+```
+
+## Setting State
+
+## Retrieving State
+
+## Reducers
+
+```ts
+const UPDATE_VALUE: Reducer<State, 'increment'|'decrement'> = (state, action) => {
+  switch (action.type) {
+    case 'increment':
+      return {count: state.count + 1};
+    case 'decrement':
+      return {count: state.count - 1};
+    default:
+      throw new Error();
+  }
+}
+
+const changeCount = useReducer(UPDATE_VALUE);
+
+changeCount('increment');
+```
+
+Find the documentation for reducers [here](https://github.com/mychidarko/glassx/wiki/Reducers)
+
+## Modules
