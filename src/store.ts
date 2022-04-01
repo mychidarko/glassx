@@ -40,10 +40,17 @@ export default class GlassX {
         if (module.state) {
           const mstate = module.state;
 
-          state = {
-            ...state,
-            ...mstate,
-          };
+          if (key === null) {
+            state = {
+              ...state,
+              ...mstate,
+            };
+          } else {
+            state = {
+              ...state,
+              [key]: mstate,
+            };
+          }
         }
 
         if (module.reducers) {
