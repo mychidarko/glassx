@@ -56,16 +56,16 @@ export default class GlassX {
         if (module.reducers) {
           const mreducers = module.reducers;
 
-          if (key) {
-            reducers = {
-              ...reducers,
-              [key]: mreducers,
-            } as Record<string, Record<string, Reducer<State>>>;
-          } else {
+          if (key === null) {
             reducers = {
               ...reducers,
               ...mreducers,
             };
+          } else {
+            reducers = {
+              ...reducers,
+              [key]: mreducers,
+            } as Record<string, Record<string, Reducer<State>>>;
           }
         }
       });
