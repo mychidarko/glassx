@@ -1,16 +1,15 @@
 import { setGlobal, getGlobal, useGlobal } from 'reactn';
+import { Reducer, Reducers } from './@types/functions';
 import {
   Hook,
   InternalOptions,
   Module,
   Options,
-  Reducer,
-  Reducers,
   State,
 } from './@types/store';
 
 export default class GlassX {
-  protected static plugins: Array<any> = [];
+  protected static plugins: any[] = [];
   protected static _options: InternalOptions = {
     defaultState: {},
     state: {},
@@ -18,9 +17,12 @@ export default class GlassX {
     compareState: false,
   };
 
+  /**
+   * Initialize and configure GlassX
+   * @param {Object} options Config for glassx
+   */
   public static store(options: Options | null = null) {
     let state = options?.state || {};
-    // fix this any later
     let reducers: Reducers = options?.reducers || {};
     let modules: Module[] = options?.modules || [];
     const plugins = options?.plugins || [];
@@ -90,6 +92,10 @@ export default class GlassX {
     });
   }
 
+  /**
+   * Set a new value into state
+   * @param {Object} state value to set into state
+   */
   public static set(state: State) {
     const globalState = getGlobal();
 
@@ -107,6 +113,10 @@ export default class GlassX {
     setGlobal(state);
   }
 
+  /**
+   * Get a value from state
+   * @param {(string | null)} state key of value to retrieve from state. Returns entire state if `state` is null
+   */
   public static get(state: string | null = null) {
     const globalState: State = getGlobal();
 
@@ -119,8 +129,12 @@ export default class GlassX {
     return globalState[state];
   }
 
-  public static reducer(reducer: string): Reducer<State> {
-    const parts = reducer.split('.');
+  /**
+   * Return a reducer from glassx
+   * @param {string} reducerName The reducer to return
+   */
+  public static reducer(reducerName: string): Reducer<State> {
+    const parts = reducerName.split('.');
     let base: any = this._options.reducers[parts[0]];
 
     if (parts.length > 1) {
@@ -130,6 +144,9 @@ export default class GlassX {
     return base;
   }
 
+  /**
+   * Reset state to it's default value
+   */
   public static reset() {
     this.applyPluginHook('onReset', this._options.defaultState);
     this.set(this._options.defaultState);
@@ -150,8 +167,17 @@ export default class GlassX {
     };
   }
 
-  public static useReducer(reducerName: string) {
-    return this.runner(this.reducer(reducerName));
+  /**
+   * Call a reducer
+   * @param {string|Function} reducer The reducer to call
+   */
+  public static useReducer(reducer: string | Reducer<State>) {
+    if (typeof reducer === 'string') {
+      return this.runner(this.reducer(reducer));
+    }
+
+    this._options.reducers[reducer.name] = reducer;
+    return this.runner(this.reducer(reducer.name));
   }
 }
 
