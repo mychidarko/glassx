@@ -1,9 +1,6 @@
+import { Reducers } from "./functions";
+
 export type State = Record<string, any>;
-export type Reducer<State, Payload = any> = (
-  prevState: State,
-  action: Payload
-) => State | Promise<State>;
-export type Reducers = Record<string, Reducer<State>>;
 export type Hook =
   | 'onReady'
   | 'onSave'
