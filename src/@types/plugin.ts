@@ -8,9 +8,9 @@ export type Hook =
   | 'onReset';
 
 export interface Plugin {
-  onReady?: (value: State) => void;
-  onSave?: (value: State) => void;
-  onRead?: (value: State) => void;
-  onReducerInvoke?: (value: State) => void;
-  onReset?: (value: State) => void;
+  onReady?: (value: State) => any;
+  onSave?: (value: State) => any;
+  onRead?: (value: State) => any;
+  onReducerInvoke?: (value: State) => any;
+  onReset?: (value: State) => any;
 }
