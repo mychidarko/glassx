@@ -1,6 +1,6 @@
 import { setGlobal, getGlobal, useGlobal } from 'reactn';
 import { Hook, Plugin } from './@types/plugin';
-import { Reducer, Reducers, UseStoreFn } from './@types/functions';
+import { Reducer, Reducers, SetStoreFn, UseStoreFn } from './@types/functions';
 import { InternalOptions, Module, Options, State } from './@types/store';
 
 export default class GlassX {
@@ -208,10 +208,10 @@ export const useStore: UseStoreFn = (item: string) => {
   return useGlobal<any>(item);
 };
 
-export const useReducer = (reducer: string) => {
+export const useReducer = (reducer: string | Reducer<State>) => {
   return GlassX.useReducer(reducer);
 };
 
-export const setStore = (item: State) => {
+export const setStore: SetStoreFn = (item: State) => {
   return GlassX.set(item);
 };
