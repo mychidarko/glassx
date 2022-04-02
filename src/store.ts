@@ -1,15 +1,10 @@
 import { setGlobal, getGlobal, useGlobal } from 'reactn';
+import { Hook, Plugin } from './@types/plugin';
 import { Reducer, Reducers } from './@types/functions';
-import {
-  Hook,
-  InternalOptions,
-  Module,
-  Options,
-  State,
-} from './@types/store';
+import { InternalOptions, Module, Options, State } from './@types/store';
 
 export default class GlassX {
-  protected static plugins: any[] = [];
+  protected static plugins: Plugin[] = [];
   protected static _options: InternalOptions = {
     defaultState: {},
     state: {},
@@ -95,7 +90,7 @@ export default class GlassX {
 
   protected static applyPluginHook(hook: Hook, params: any) {
     this.plugins.forEach((plugin) => {
-      plugin[hook] && plugin[hook](params);
+      plugin[hook] && plugin[hook]!(params);
     });
   }
 
