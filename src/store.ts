@@ -101,10 +101,25 @@ export default class GlassX {
   public static set(state: State) {
     const globalState: State = getGlobal();
 
-    state = {
-      ...globalState,
-      ...state,
-    };
+    const parts = state.split('.');
+
+    if (parts.length > 1) {
+      let selectedState = globalState[parts[0]];
+      selectedState = selectedState[parts[1]];
+
+      state = {
+        ...globalState,
+        [parts[0]]: {
+          ...selectedState,
+          ...state,
+        },
+      };
+    } else {
+      state = {
+        ...globalState,
+        ...state,
+      };
+    }
 
     this.applyPluginHook('onSave', state);
 
