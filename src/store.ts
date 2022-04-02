@@ -20,7 +20,7 @@ export default class GlassX {
     let state = options?.state || {};
     let reducers: Reducers = options?.reducers || {};
     let modules: Module[] = options?.modules || [];
-    const plugins = options?.plugins || [];
+    const plugins: Plugin[] = options?.plugins || [];
 
     this._options.compareState = options?.compareState || false;
 
@@ -77,8 +77,8 @@ export default class GlassX {
     this.applyPluginHook('onReady', state);
   }
 
-  protected static pluginInit(plugins: any[]) {
-    plugins.forEach((plugin) => {
+  protected static pluginInit(plugins: Plugin[]) {
+    plugins.forEach((plugin: any) => {
       if (typeof plugin === 'object') {
         this.plugins.push(plugin);
       } else {
@@ -99,7 +99,7 @@ export default class GlassX {
    * @param {Object} state value to set into state
    */
   public static set(state: State) {
-    const globalState = getGlobal();
+    const globalState: State = getGlobal();
 
     state = {
       ...globalState,
@@ -128,7 +128,14 @@ export default class GlassX {
 
     this.applyPluginHook('onRead', state);
 
-    return globalState[state];
+    const parts = state.split('.');
+    let selectedState = globalState[parts[0]];
+
+    if (parts.length > 1) {
+      selectedState = selectedState[parts[1]];
+    }
+
+    return selectedState;
   }
 
   /**

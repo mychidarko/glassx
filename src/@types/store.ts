@@ -1,4 +1,5 @@
 import { Reducers } from "./functions";
+import { Plugin } from "./plugin";
 
 export type State = Record<string, any>;
 
@@ -6,7 +7,7 @@ export type Options = {
   state?: State;
   reducers?: Reducers;
   modules?: Module[];
-  plugins?: any[];
+  plugins?: Plugin[];
   compareState?: boolean;
 }
 
