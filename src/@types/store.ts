@@ -1,12 +1,6 @@
 import { Reducers } from "./functions";
 
 export type State = Record<string, any>;
-export type Hook =
-  | 'onReady'
-  | 'onSave'
-  | 'onRead'
-  | 'onReducerInvoke'
-  | 'onReset';
 
 export interface Options {
   state?: State;

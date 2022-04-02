@@ -1,98 +1,97 @@
-import GlassX from "..";
-import { State } from "../@types/store";
+import GlassX from '..';
+import { State } from '../@types/store';
+import { Plugin } from '../@types/plugin';
 
-const key = "glassx";
-const isSSR = typeof window === "undefined";
+const key = 'glassx';
+const isSSR = typeof window === 'undefined';
 
-class PersistedState {
-    public storage: any = !isSSR && window.localStorage;
+class PersistedState implements Plugin {
+  public storage: any = !isSSR && window.localStorage;
 
-    setStorage(storage: any) {
-        if (typeof storage === "function") {
-            this.storage = storage();
-        } else {
-            this.storage = storage;
-        }
+  setStorage(storage: any) {
+    if (typeof storage === 'function') {
+      this.storage = storage();
+    } else {
+      this.storage = storage;
+    }
+  }
+
+  retrieveState() {
+    if (isSSR) {
+      return;
     }
 
-    retrieveState() {
-        if (isSSR) {
-          return;
-        }
+    const value: string | null = this.storage.getItem(key);
 
-        const value: string|null = this.storage.getItem(key);
-
-        if (!value) {
-            return undefined;
-        }
-
-        try {
-            return (typeof value !== "undefined")
-                ? JSON.parse(value)
-                : undefined;
-        } catch (err) {}
-
-        return undefined;
+    if (!value) {
+      return undefined;
     }
 
-    setState(state: State) {
-        let globalState = GlassX.get();
+    try {
+      return typeof value !== 'undefined' ? JSON.parse(value) : undefined;
+    } catch (err) {}
 
-        state = {
-            ...globalState,
-            ...state,
-        };
+    return undefined;
+  }
 
-        this.saveState(state);
+  setState(state: State) {
+    let globalState = GlassX.get();
+
+    state = {
+      ...globalState,
+      ...state,
+    };
+
+    this.saveState(state);
+  }
+
+  saveState(state: State) {
+    if (isSSR) {
+      return;
     }
 
-    saveState(state: State) {
-        if (isSSR) {
-            return;
-        }
+    return this.storage.setItem(key, JSON.stringify(state));
+  }
 
-        return this.storage.setItem(key, JSON.stringify(state));
+  compareState(state: State | string) {
+    if (isSSR) {
+      return;
     }
 
-    compareState(state: State|string) {
-        if (isSSR) {
-            return;
-        }
+    state = JSON.stringify(state);
+    const cache = this.storage.getItem(key);
 
-        state = JSON.stringify(state);
-        const cache = this.storage.getItem(key);
+    return state === cache;
+  }
 
-        return (state === cache);
+  refresh() {
+    const globalState = GlassX.get();
+
+    this.saveState(globalState);
+  }
+
+  onSave(state: State) {
+    if (!this.compareState(state)) {
+      this.setState(state);
+    }
+  }
+
+  onReady(state: State) {
+    if (!this.compareState(state)) {
+      const cache = this.retrieveState();
+
+      if (cache) {
+        GlassX.set(cache);
+        return true;
+      }
+
+      this.saveState(state);
+
+      return false;
     }
 
-    refresh() {
-        const globalState = GlassX.get();
-
-        this.saveState(globalState);
-    }
-
-    onSave(state: State) {
-        if (!this.compareState(state)) {
-            this.setState(state);
-        }
-    }
-
-    onReady(state: State) {
-        if (!this.compareState(state)) {
-            const cache = this.retrieveState();
-        
-            if (cache) {
-                GlassX.set(cache);
-                return true;
-            }
-
-            this.saveState(state);
-
-            return false;
-        }
-
-        return false;
-    }
+    return false;
+  }
 }
 
 export default PersistedState;
