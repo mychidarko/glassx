@@ -2,22 +2,22 @@ import { Reducers } from "./functions";
 
 export type State = Record<string, any>;
 
-export interface Options {
+export type Options = {
   state?: State;
   reducers?: Reducers;
   modules?: Module[];
   plugins?: any[];
-  compareState?: Boolean;
+  compareState?: boolean;
 }
 
-export interface InternalOptions {
+export type InternalOptions = {
   defaultState: State;
   state: State;
   reducers: Reducers;
-  compareState: Boolean;
+  compareState: boolean;
 }
 
-export interface Module {
+export type Module = {
   namespace?: string;
   state?: State;
   reducers?: Reducers;
