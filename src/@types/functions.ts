@@ -3,7 +3,7 @@ import { State } from './store';
 
 export type SetStore<StateType = any> = Dispatch<SetStateAction<StateType>>;
 
-export type useStore<StateType = any> = (
+export type UseStoreFn<StateType = any> = (
   key: string
 ) => [StateType, SetStore<StateType>];
 
