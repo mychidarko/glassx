@@ -178,14 +178,13 @@ export default class GlassX {
 
   protected static compareState(state: State | string) {
     state = JSON.stringify(state);
-    let globalState = getGlobal();
-    globalState = JSON.stringify(globalState);
+    const globalState = JSON.stringify(getGlobal());
 
     return state === globalState;
   }
 
   protected static runner(reducer: Reducer<State>) {
-    return async (payload: Record<string, any>) => {
+    return async (payload: any) => {
       const state = reducer(this.get(), payload);
       this.set(await state);
     };
