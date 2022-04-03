@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
-import { State } from './store';
+import { State } from './core';
 
 export type SetStoreFn<StateType = any> = Dispatch<SetStateAction<StateType>>;
+export type GetStateFn = (state?: string | null) => any;
 
 export type UseStoreFn<StateType = any> = (
   key: string
