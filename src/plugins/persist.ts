@@ -1,5 +1,5 @@
 import GlassX from '..';
-import { State } from '../@types/store';
+import { State } from '../@types/core';
 import { Plugin } from '../@types/plugin';
 
 const key = 'glassx';
