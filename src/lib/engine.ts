@@ -11,6 +11,8 @@ export default class Engine {
     compareState: false
   };
 
+  public forceUpdate = null;
+
   /**
    * Initialize and configure GlassX
    * @param {Object} options Config for glassx
@@ -90,4 +92,6 @@ export default class Engine {
       plugin[hook] && plugin[hook]!(params);
     });
   }
+
+
 }
