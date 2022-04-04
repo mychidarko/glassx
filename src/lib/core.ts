@@ -1,96 +1,38 @@
 import { Hook, Plugin } from '../@types/plugin';
 import { Reducer, Reducers, SetStoreFn, UseStoreFn } from '../@types/functions';
 import { InternalOptions, Module, Options, State } from '../@types/core';
+import { getEngine } from 'utils/store';
+import Engine from './engine';
 
 export default class GlassX {
-  protected static plugins: Plugin[] = [];
-  protected static _options: InternalOptions = {
-    defaultState: {},
-    state: {},
-    reducers: {},
-    compareState: false
-  };
+  protected static engine: Engine;
+
+  /**
+   * Initialize the GlassX state engine
+   */
+  protected static engineInit() {
+    if (!this.engine) {
+      this.engine = getEngine();
+    }
+  }
 
   /**
    * Initialize and configure GlassX
    * @param {Object} options Config for glassx
    */
   public static store(options: Options | null = null) {
-    let state = options?.state || {};
-    let reducers: Reducers = options?.reducers || {};
-    let modules: Module[] = options?.modules || [];
-    const plugins: Plugin[] = options?.plugins || [];
-
-    this._options.compareState = options?.compareState || false;
-
-    if (modules.length > 0) {
-      modules.forEach(module => {
-        let key: string | null = null;
-
-        if (module.namespace && module.namespace.length > 0) {
-          key = module.namespace;
-        }
-
-        if (module.state) {
-          const mstate = module.state;
-
-          if (key === null) {
-            state = {
-              ...state,
-              ...mstate
-            };
-          } else {
-            state = {
-              ...state,
-              [key]: mstate
-            };
-          }
-        }
-
-        if (module.reducers) {
-          const mreducers = module.reducers;
-
-          if (key === null) {
-            reducers = {
-              ...reducers,
-              ...mreducers
-            };
-          } else {
-            reducers = {
-              ...reducers,
-              [key]: mreducers
-            } as Record<string, Record<string, Reducer<State>>>;
-          }
-        }
-      });
-    }
-
-    setGlobal(state);
-
-    this._options.defaultState = state;
-    this._options.state = state;
-    this._options.reducers = reducers;
-
-    this.pluginInit(plugins);
-
-    this.applyPluginHook('onReady', state);
+    this.engineInit();
+    this.engine.store(options);
   }
 
   protected static pluginInit(plugins: Plugin[]) {
-    plugins.forEach((plugin: any) => {
-      if (typeof plugin === 'object') {
-        this.plugins.push(plugin);
-      } else {
-        const p = new plugin();
-        this.plugins.push(p);
-      }
-    });
+    this.engineInit();
+    this.engine.pluginInit(plugins);
   }
 
   protected static applyPluginHook(hook: Hook, params: any) {
-    this.plugins.forEach(plugin => {
-      plugin[hook] && plugin[hook]!(params);
-    });
+    this.engineInit();
+    this.engine.applyPluginHook(hook, params);
   }
 
   /**
@@ -202,17 +144,3 @@ export default class GlassX {
     return this.runner(this.reducer(reducer.name));
   }
 }
-
-export function useStore<StateType = any>(
-  item: string
-): [StateType, SetStoreFn<StateType>] {
-  return useGlobal<any>(item);
-}
-
-export const useReducer = (reducer: string | Reducer<State>) => {
-  return GlassX.useReducer(reducer);
-};
-
-export const setStore: SetStoreFn = (item: State) => {
-  return GlassX.set(item);
-};
