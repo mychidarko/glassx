@@ -42,6 +42,7 @@ export default class GlassX {
   public static set<StateType extends State = State>(
     state: SetStateAction<StateType>
   ) {
+    this.engineInit();
     let finalState: State = {};
 
     if (typeof state === 'function') {
