@@ -69,12 +69,13 @@ export default class GlassX {
       });
     }
 
+    setGlobal(state);
+
     this._options.defaultState = state;
     this._options.state = state;
     this._options.reducers = reducers;
 
     this.pluginInit(plugins);
-
     this.applyPluginHook('onReady', state);
   }
 
