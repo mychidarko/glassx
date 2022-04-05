@@ -1,4 +1,4 @@
-import { State } from "./core";
+import { State } from './core';
 
 export type Hook =
   | 'onReady'
