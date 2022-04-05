@@ -3,12 +3,9 @@ import { Reducers } from './functions';
 import { Plugin } from './plugin';
 
 export type State = Record<string, any>;
-export type SyncGlobalState<Type = State> = null | Partial<
-  Type
-> | void;
+export type SyncGlobalState<Type = State> = null | Partial<Type> | void;
 export interface AsyncGlobalState<Type = State>
   extends Promise<GlobalState<Type>> {}
-
 export interface FunctionalGlobalState<Type = State> {
   (global: Type, reducerName?: string, reducerArgs?: any[]): GlobalState<Type>;
 }
