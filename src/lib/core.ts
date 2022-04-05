@@ -106,19 +106,18 @@ export default class GlassX {
     const globalState: State = this.get();
 
     if (typeof state === 'function') {
-      const globalState: State = this.get();
       const callableState = state as (prevState: State) => State;
 
       finalState = {
         ...finalState,
+        ...globalState,
         ...callableState(globalState),
-        ...globalState
       };
     } else {
       finalState = {
         ...finalState,
+        ...globalState,
         ...state,
-        ...globalState
       };
     }
 
