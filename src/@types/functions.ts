@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction } from 'react';
 import { State } from './core';
 
 export type SetStoreFn<StateType = any> = Dispatch<SetStateAction<StateType>>;
-export type GetStateFn = (state?: string | null) => any;
+export type GetStoreFn = (state?: string | null) => any;
 
 export type UseStoreFn<StateType = any> = (
-  key: string
+  key?: string
 ) => [StateType, SetStoreFn<StateType>];
 
 export type Reducer<State, Payload = any> = (
