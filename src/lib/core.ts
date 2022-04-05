@@ -107,7 +107,7 @@ export default class GlassX {
 
     if (typeof state === 'function') {
       const globalState: State = this.get();
-      const callableState = state as (prevState: State) => StateType;
+      const callableState = state as (prevState: State) => State;
 
       finalState = {
         ...finalState,
@@ -129,7 +129,8 @@ export default class GlassX {
     }
 
     this._options.state = finalState;
-    setGlobal(finalState);
+
+    return setGlobal(finalState);
   }
 
   /**
