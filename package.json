@@ -1,7 +1,7 @@
 {
   "name": "glassx",
   "description": "React state management with a smiley face.",
-  "version": "0.20.13",
+  "version": "0.20.14",
   "main": "dist/index.js",
   "module": "dist/glassx.esm.js",
   "typings": "dist/index.d.ts",
