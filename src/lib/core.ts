@@ -112,13 +112,13 @@ export default class GlassX {
       finalState = {
         ...finalState,
         ...globalState,
-        ...callableState(globalState),
+        ...callableState(globalState)
       };
     } else {
       finalState = {
         ...finalState,
         ...globalState,
-        ...state,
+        ...state
       };
     }
 
@@ -183,13 +183,15 @@ export default class GlassX {
    * Call a reducer
    * @param {string|Function} reducer The reducer to call
    */
-  public static useReducer(reducer: string | Reducer<State>) {
+  public static useReducer<PayloadType = any>(
+    reducer: string | Reducer<State>
+  ) {
     if (typeof reducer === 'string') {
-      return this.runner(this.reducer(reducer));
+      return this.runner<PayloadType>(this.reducer(reducer));
     }
 
     this._options.reducers[reducer.name] = reducer;
-    return this.runner(this.reducer(reducer.name));
+    return this.runner<PayloadType>(this.reducer(reducer.name));
   }
 
   private static compareState(state: State | string): boolean {
@@ -199,8 +201,8 @@ export default class GlassX {
     return state === globalState;
   }
 
-  private static runner(reducer: Reducer<State>) {
-    return async (payload: any) => {
+  private static runner<PayloadType = any>(reducer: Reducer<State>) {
+    return async (payload: PayloadType) => {
       const state = reducer(this.get(), payload);
       this.set(await state);
     };

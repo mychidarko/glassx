@@ -15,8 +15,8 @@ export function useStore<StateType = any>(
   return useGlobal<any, any>(item);
 }
 
-export const useReducer = (reducer: string | Reducer<State>) => {
-  return GlassX.useReducer(reducer);
+export function useReducer<PayloadType = any>(reducer: string | Reducer<State>) {
+  return GlassX.useReducer<PayloadType>(reducer);
 };
 
 export function setStore<StateType extends State = State>(
