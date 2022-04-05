@@ -12,12 +12,25 @@ export function useStore<StateType = any>(
 export function useStore<StateType = any>(
   item?: string
 ): [StateType, SetStoreFn<StateType>] {
-  return useGlobal<any, any>(item);
+  const [state, setState] = useGlobal<any, any>(item);
+
+  const stateSetter: SetStoreFn<StateType> = value => {
+    if (typeof value === 'function') {
+      const callableState = value as (prevState: StateType) => State;
+      setState(callableState(state));
+    } else {
+      setState(value);
+    }
+  };
+
+  return [state, stateSetter];
 }
 
-export function useReducer<PayloadType = any>(reducer: string | Reducer<State>) {
+export function useReducer<PayloadType = any>(
+  reducer: string | Reducer<State>
+) {
   return GlassX.useReducer<PayloadType>(reducer);
-};
+}
 
 export function setStore<StateType extends State = State>(
   item: SetStateAction<StateType>
