@@ -2,7 +2,7 @@ import { Hook, Plugin } from '../@types/plugin';
 import { Reducer, Reducers } from '../@types/functions';
 import { InternalOptions, Module, Options, State } from '../@types/core';
 import { Context } from './context';
-import { objectGetListener } from 'utils/store';
+import { objectGetListener } from './../utils/store';
 
 export default class Engine {
   private plugins: Plugin[] = [];

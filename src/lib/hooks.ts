@@ -1,11 +1,10 @@
-import { SetStateAction, useEffect } from 'react';
 import GlassX from './core';
-import useForceUpdate from 'use-force-update';
-import { useCallback, useContext } from 'react';
 import { Context } from './context';
 import { State } from './../@types/core';
 import { HooksUnsupportedError } from './../utils/error';
 import { SetStoreFn, Reducer } from './../@types/functions';
+import { SetStateAction, useEffect, useCallback, useContext } from 'react';
+import useForceUpdate from 'use-force-update';
 
 export function useStore<StateType = any>(): [State, SetStoreFn<State>];
 export function useStore<StateType = any>(
