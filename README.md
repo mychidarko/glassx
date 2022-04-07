@@ -85,6 +85,14 @@ const store = GlassX.store({
 
 ## Setting State
 
+We have already seen a bunch of examples, but we basically have 3 different methods we can use to set the global state of our apps.
+
+### useStore
+
+### setStore
+
+### GlassX.set
+
 ## Retrieving State
 
 ## Reducers
