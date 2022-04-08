@@ -89,6 +89,42 @@ We have already seen a bunch of examples, but we basically have 3 different meth
 
 ### useStore
 
+The `useStore` hook is the fastest and easiest way to set and access your global state at the same time. `useStore` takes in a string which is the key of the global state you want to access and returns the current value of that state and a setter to update it just like React's `useState`.
+
+```js
+import { useStore } from 'glassx';
+
+export default function Home() {
+  const [something, setSomething] = useStore('something');
+
+  setTimeout(() => {
+    setSomething('hobies');
+  }, 3000);
+  ...
+```
+
+If you're using TypeScript, you can give a shape to your state value instead of returning a value with type `any`.
+
+```tsx
+import { useStore } from 'glassx';
+
+type SomeType = string;
+
+export default function Home() {
+  const [something, setSomething] = useStore<SomeType>('something');
+
+  setTimeout(() => {
+    setSomething('hobies');
+  }, 3000);
+  ...
+```
+
+You can also leave out the parameter passed into `useStore`. This will return the entire state back allong with a setter to update the entire global state.
+
+```ts
+const [state, setState] = useStore();
+```
+
 ### setStore
 
 ### GlassX.set
