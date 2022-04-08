@@ -125,9 +125,41 @@ You can also leave out the parameter passed into `useStore`. This will return th
 const [state, setState] = useStore();
 ```
 
+Just like React's `useState` hook, `useStore` allows you to pass in a function which contains the previous state which you can use in your values.
+
+```ts
+const [state, setState] = useStore();
+
+// ...
+
+setState((prevState) => ({
+  value: prevState.value - 1,
+}));
+```
+
+If you want to go with the function method, make sure your function returns the state to update. In the case of a single state item, only that item's previous state is returned.
+
+```ts
+const [state, setState] = useStore('item');
+
+// ...
+
+setState((previousVal) => previousVal - 1);
+```
+
 ### setStore
 
+Unlike `useStore` above, `setStore` is used to initialize or update your global state. It always takes in an object containing the values you want to update.
+
+```ts
+setStore({
+  item1: 'value',
+});
+```
+
 ### GlassX.set
+
+This method works exactly like the `setStore` function above
 
 ## Retrieving State
 
