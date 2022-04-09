@@ -36,22 +36,6 @@ export default function Home() {
   ...
 ```
 
-You can also give shape to your state just as done in React, like this:
-
-```tsx
-import { useStore } from 'glassx';
-
-type SomeType = string;
-
-export default function Home() {
-  const [something, setSomething] = useStore<SomeType>('something');
-
-  setTimeout(() => {
-    setSomething('hobies');
-  }, 3000);
-  ...
-```
-
 ## Optional Setup
 
 As mentioned earlier, GlassX requires absolute no setup or boilerplate. You only need to do this if you want extra options, plugins, just want to set a default state for your application or want to scope your state using modules.
@@ -140,26 +124,50 @@ setState((prevState) => ({
 If you want to go with the function method, make sure your function returns the state to update. In the case of a single state item, only that item's previous state is returned.
 
 ```ts
-const [state, setState] = useStore('item');
+const [item, setItem] = useStore('item');
 
 // ...
 
 setState((previousVal) => previousVal - 1);
 ```
 
-### setStore
+### GlassX.set
 
-Unlike `useStore` above, `setStore` is used to initialize or update your global state. It always takes in an object containing the values you want to update.
+Unlike `useStore` above, `set` is used to initialize or update your global state. As such, it will always take in an object, or function returning an object.
 
 ```ts
-setStore({
-  item1: 'value',
+import GlassX from 'glassx';
+
+GlassX.set({
+  value: newValue
 });
 ```
 
-### GlassX.set
+Just like the `useStore` hook, you can also pass a function into `set` directly.
 
-This method works exactly like the `setStore` function above
+```ts
+import GlassX from 'glassx';
+
+GlassX.set((prevState) => ({
+  value: prevState.value + newValue
+}));
+```
+
+### setStore
+
+This is an alias for the `set` method above. You can use it if you don't want to import the GlassX class.
+
+```ts
+setStore({
+  item1: 0,
+});
+
+// or
+
+setStore((prevState) => ({
+  item1: prevState.item1 + 1,
+}));
+```
 
 ## Retrieving State
 
