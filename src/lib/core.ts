@@ -89,7 +89,7 @@ export default class GlassX {
     });
   }
 
-  protected static applyPluginHook(hook: Hook, params: any) {
+  public static applyPluginHook(hook: Hook, params: any) {
     this.plugins.forEach(plugin => {
       plugin[hook] && plugin[hook]!(params);
     });
@@ -136,38 +136,14 @@ export default class GlassX {
     const [state, setState] = useGlobal<any, any>(item);
 
     const stateSetter: SetStoreFn<StateType> = value => {
-      let finalState: State = {};
-
       if (typeof value === 'function') {
         const callableState = value as (prevState: StateType) => State;
-        finalState = item
-          ? {
-              ...finalState,
-              [item]: state,
-              ...callableState(state)
-            }
-          : {
-              ...finalState,
-              ...state,
-              ...callableState(state)
-            };
-
-        setState(finalState);
+        setState(callableState(state));
       } else {
-        finalState = item
-          ? {
-              ...finalState,
-              [item]: state
-            }
-          : {
-              ...finalState,
-              ...state
-            };
-
         setState(value);
       }
 
-      GlassX.applyPluginHook('onSave', finalState);
+      GlassX.applyPluginHook('onSave', GlassX.get());
     };
 
     return [state, stateSetter];
