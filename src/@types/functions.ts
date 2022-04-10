@@ -8,8 +8,8 @@ export type UseStoreFn<StateType = any> = (
   key?: string
 ) => [StateType, SetStoreFn<StateType>];
 
-export type Reducer<State, Payload = any> = (
-  prevState: State,
+export type Reducer<GlobalState extends State = State, Payload = any> = (
+  prevState: GlobalState,
   action: Payload
 ) => State | Promise<State>;
 
