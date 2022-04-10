@@ -114,7 +114,7 @@ export default function Home() {
   ...
 ```
 
-You can also leave out the parameter passed into `useStore`. This will return the entire state back allong with a setter to update the entire global state.
+You can also leave out the parameter passed into `useStore`. This will return the entire state back along with a setter to update the entire global state.
 
 ```ts
 const [state, setState] = useStore();
