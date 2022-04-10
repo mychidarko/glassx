@@ -1,5 +1,11 @@
 import { State } from './core';
 
+export interface PersistPluginOptions {
+  storage?: any;
+  key?: string;
+  env?: 'react' | 'react-native';
+};
+
 export type Hook =
   | 'onReady'
   | 'onSave'
