@@ -1,14 +1,33 @@
 import GlassX from '..';
 import { State } from '../@types/core';
-import { Plugin } from '../@types/plugin';
+import { PersistPluginOptions, Plugin } from '../@types/plugin';
 
-const key = 'glassx';
 const isSSR = typeof window === 'undefined';
 
 class PersistedState implements Plugin {
-  public storage: any = !isSSR && window.localStorage;
+  private storage: any = !isSSR && window.localStorage;
+  private key: string = 'glassx';
+  private env: Required<PersistPluginOptions['env']> = 'react';
 
-  setStorage(storage: any) {
+  public constructor(options: PersistPluginOptions) {
+    if (options.storage) {
+      this.setStorage(options.storage);
+    }
+
+    if (options.key) {
+      this.key = options.key;
+    }
+
+    if (options.env) {
+      this.env = options.env;
+    }
+  }
+
+  private isReactNative() {
+    return this.env === "react-native";
+  }
+
+  public setStorage(storage: any) {
     if (typeof storage === 'function') {
       this.storage = storage();
     } else {
@@ -16,12 +35,12 @@ class PersistedState implements Plugin {
     }
   }
 
-  retrieveState() {
-    if (isSSR) {
+  public retrieveState() {
+    if (!this.isReactNative() && isSSR) {
       return;
     }
 
-    const value: string | null = this.storage.getItem(key);
+    const value: string | null = this.storage.getItem(this.key);
 
     if (!value) {
       return undefined;
@@ -34,49 +53,47 @@ class PersistedState implements Plugin {
     return undefined;
   }
 
-  setState(state: State) {
+  public setState(state: State) {
     let globalState = GlassX.get();
 
     state = {
       ...globalState,
-      ...state,
+      ...state
     };
 
     this.saveState(state);
   }
 
-  saveState(state: State) {
-    if (isSSR) {
+  public saveState(state: State) {
+    if (!this.isReactNative() && isSSR) {
       return;
     }
 
-    return this.storage.setItem(key, JSON.stringify(state));
+    return this.storage.setItem(this.key, JSON.stringify(state));
   }
 
-  compareState(state: State | string) {
-    if (isSSR) {
+  public compareState(state: State | string) {
+    if (!this.isReactNative() && isSSR) {
       return;
     }
 
     state = JSON.stringify(state);
-    const cache = this.storage.getItem(key);
-
+    const cache = this.storage.getItem(this.key);
     return state === cache;
   }
 
-  refresh() {
+  public refresh() {
     const globalState = GlassX.get();
-
     this.saveState(globalState);
   }
 
-  onSave(state: State) {
+  public onSave(state: State) {
     if (!this.compareState(state)) {
       this.setState(state);
     }
   }
 
-  onReady(state: State) {
+  public onReady(state: State) {
     if (!this.compareState(state)) {
       const cache = this.retrieveState();
 
