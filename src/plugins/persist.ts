@@ -5,33 +5,30 @@ import { PersistPluginOptions, Plugin } from '../@types/plugin';
 const isSSR = typeof window === 'undefined';
 
 class PersistedState implements Plugin {
-  private storage: any = !isSSR && window.localStorage;
-  private key: string = 'glassx';
-  private env: Required<PersistPluginOptions['env']> = 'react';
+  protected _options: Required<PersistPluginOptions> = {
+    storage: !isSSR && window.localStorage,
+    key: 'glassx',
+    env: 'react'
+  };
 
   public constructor(options?: PersistPluginOptions) {
-    if (options?.storage) {
-      this.setStorage(options.storage);
-    }
-
-    if (options?.key) {
-      this.key = options.key;
-    }
-
-    if (options?.env) {
-      this.env = options.env;
+    if (options) {
+      this._options = {
+        ...this._options,
+        ...options,
+      }
     }
   }
 
   private isReactNative() {
-    return this.env === "react-native";
+    return this._options.env === "react-native";
   }
 
   public setStorage(storage: any) {
     if (typeof storage === 'function') {
-      this.storage = storage();
+      this._options.storage = storage();
     } else {
-      this.storage = storage;
+      this._options.storage = storage;
     }
   }
 
@@ -40,7 +37,7 @@ class PersistedState implements Plugin {
       return;
     }
 
-    const value: string | null = await this.storage.getItem(this.key);
+    const value: string | null = await this._options.storage.getItem(this._options.key);
 
     if (!value) {
       return undefined;
@@ -53,23 +50,23 @@ class PersistedState implements Plugin {
     return undefined;
   }
 
-  public setState(state: State) {
-    let globalState = GlassX.get();
+  public async setState(state: State) {
+    let globalState = await GlassX.get();
 
     state = {
       ...globalState,
       ...state
     };
 
-    this.saveState(state);
+    await this.saveState(state);
   }
 
-  public saveState(state: State) {
+  public async saveState(state: State) {
     if (!this.isReactNative() && isSSR) {
       return;
     }
 
-    return this.storage.setItem(this.key, JSON.stringify(state));
+    return await this._options.storage.setItem(this._options.key, JSON.stringify(state));
   }
 
   public async compareState(state: State | string) {
@@ -78,34 +75,30 @@ class PersistedState implements Plugin {
     }
 
     state = JSON.stringify(state);
-    const cache = await this.storage.getItem(this.key);
+    const cache = await this._options.storage.getItem(this._options.key);
     return state === cache;
   }
 
-  public refresh() {
-    const globalState = GlassX.get();
-    this.saveState(globalState);
+  public async refresh() {
+    const globalState = await GlassX.get();
+    await this.saveState(globalState);
   }
 
-  public onSave(state: State) {
-    if (!this.compareState(state)) {
+  public async onSave(state: State) {
+    if (!await this.compareState(state)) {
       this.setState(state);
     }
   }
 
-  public onReady(state: State) {
-    if (!this.compareState(state)) {
-      const cache = this.retrieveState();
+  public async onReady(state: State) {
+    const cache = await this.retrieveState();
 
-      if (cache) {
-        GlassX.set(cache);
-        return true;
-      }
-
-      this.saveState(state);
-
-      return false;
+    if (cache) {
+      GlassX.set(cache);
+      return true;
     }
+
+    await this.saveState(state);
 
     return false;
   }
