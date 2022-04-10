@@ -9,16 +9,16 @@ class PersistedState implements Plugin {
   private key: string = 'glassx';
   private env: Required<PersistPluginOptions['env']> = 'react';
 
-  public constructor(options: PersistPluginOptions) {
-    if (options.storage) {
+  public constructor(options?: PersistPluginOptions) {
+    if (options?.storage) {
       this.setStorage(options.storage);
     }
 
-    if (options.key) {
+    if (options?.key) {
       this.key = options.key;
     }
 
-    if (options.env) {
+    if (options?.env) {
       this.env = options.env;
     }
   }
