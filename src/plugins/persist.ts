@@ -72,13 +72,13 @@ class PersistedState implements Plugin {
     return this.storage.setItem(this.key, JSON.stringify(state));
   }
 
-  public compareState(state: State | string) {
+  public async compareState(state: State | string) {
     if (!this.isReactNative() && isSSR) {
       return;
     }
 
     state = JSON.stringify(state);
-    const cache = this.storage.getItem(this.key);
+    const cache = await this.storage.getItem(this.key);
     return state === cache;
   }
 
