@@ -15,19 +15,20 @@ export function useStore<StateType = any>(
   const [state, setState] = useGlobal<any, any>(item);
 
   const stateSetter: SetStoreFn<StateType> = value => {
+    let localState = {};
+
     if (typeof value === 'function') {
       const callableState = value as (prevState: StateType) => State;
       const finalState = callableState(state);
-      GlassX.applyPluginHook('onSave', finalState);
+      localState = finalState;
 
       setState(finalState);
     } else {
+      localState = item ? { ...state, [item]: value } : { ...state, ...value };
       setState(value);
-      GlassX.applyPluginHook(
-        'onSave',
-        item ? { ...state, [item]: value } : { ...state, ...value }
-      );
     }
+
+    GlassX.applyPluginHook('onSave', localState);
   };
 
   return [state, stateSetter];
