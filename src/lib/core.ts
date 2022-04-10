@@ -63,7 +63,7 @@ export default class GlassX {
             reducers = {
               ...reducers,
               [key]: mreducers
-            } as Record<string, Record<string, Reducer<State>>>;
+            } as Record<string, Record<string, Reducer>>;
           }
         }
       });
@@ -160,7 +160,7 @@ export default class GlassX {
    * Return a reducer from glassx
    * @param {string} reducerName The reducer to return
    */
-  public static reducer(reducerName: string): Reducer<State> {
+  public static reducer(reducerName: string): Reducer {
     const parts = reducerName.split('.');
     let base: any = this._options.reducers[parts[0]];
 
@@ -184,7 +184,7 @@ export default class GlassX {
    * @param {string|Function} reducer The reducer to call
    */
   public static useReducer<PayloadType = any>(
-    reducer: string | Reducer<State>
+    reducer: string | Reducer
   ) {
     if (typeof reducer === 'string') {
       return this.runner<PayloadType>(this.reducer(reducer));
@@ -201,7 +201,7 @@ export default class GlassX {
     return state === globalState;
   }
 
-  private static runner<PayloadType = any>(reducer: Reducer<State>) {
+  private static runner<PayloadType = any>(reducer: Reducer) {
     return async (payload: PayloadType) => {
       const state = reducer(this.get(), payload);
       this.set(await state);
