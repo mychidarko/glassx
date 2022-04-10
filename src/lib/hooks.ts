@@ -1,4 +1,3 @@
-import { useGlobal } from 'reactn';
 import GlassX from './core';
 import { State } from './../@types/core';
 import { SetStoreFn, Reducer } from './../@types/functions';
@@ -12,26 +11,7 @@ export function useStore<StateType = any>(
 export function useStore<StateType = any>(
   item?: string
 ): [StateType, SetStoreFn<StateType>] {
-  const [state, setState] = useGlobal<any, any>(item);
-
-  const stateSetter: SetStoreFn<StateType> = value => {
-    let localState = {};
-
-    if (typeof value === 'function') {
-      const callableState = value as (prevState: StateType) => State;
-      const finalState = callableState(state);
-      localState = finalState;
-
-      setState(finalState);
-    } else {
-      localState = item ? { ...state, [item]: value } : { ...state, ...value };
-      setState(value);
-    }
-
-    GlassX.applyPluginHook('onSave', localState);
-  };
-
-  return [state, stateSetter];
+  return GlassX.useStore(item);
 }
 
 export function useReducer<PayloadType = any>(

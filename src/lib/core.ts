@@ -1,9 +1,8 @@
-import { getGlobal } from 'reactn';
-import { setGlobal } from 'reactn';
+import { getGlobal, setGlobal, useGlobal } from 'reactn';
 import { InternalOptions } from './../@types/core';
 import { SetStateAction } from 'react';
 import { Hook, Plugin } from '../@types/plugin';
-import { Reducer, Reducers } from '../@types/functions';
+import { Reducer, Reducers, SetStoreFn } from '../@types/functions';
 import { Options, State, Module } from '../@types/core';
 
 export default class GlassX {
@@ -90,7 +89,7 @@ export default class GlassX {
     });
   }
 
-  public static applyPluginHook(hook: Hook, params: any) {
+  protected static applyPluginHook(hook: Hook, params: any) {
     this.plugins.forEach(plugin => {
       plugin[hook] && plugin[hook]!(params);
     });
@@ -131,6 +130,47 @@ export default class GlassX {
     this._options.state = finalState;
 
     return setGlobal(finalState);
+  }
+
+  public static useStore<StateType = any>(item?: string): any {
+    const [state, setState] = useGlobal<any, any>(item);
+
+    const stateSetter: SetStoreFn<StateType> = value => {
+      let finalState: State = {};
+
+      if (typeof value === 'function') {
+        const callableState = value as (prevState: StateType) => State;
+        finalState = item
+          ? {
+              ...finalState,
+              [item]: state,
+              ...callableState(state)
+            }
+          : {
+              ...finalState,
+              ...state,
+              ...callableState(state)
+            };
+
+        setState(finalState);
+      } else {
+        finalState = item
+          ? {
+              ...finalState,
+              [item]: state
+            }
+          : {
+              ...finalState,
+              ...state
+            };
+
+        setState(value);
+      }
+
+      GlassX.applyPluginHook('onSave', finalState);
+    };
+
+    return [state, stateSetter];
   }
 
   /**
@@ -183,9 +223,7 @@ export default class GlassX {
    * Call a reducer
    * @param {string|Function} reducer The reducer to call
    */
-  public static useReducer<PayloadType = any>(
-    reducer: string | Reducer
-  ) {
+  public static useReducer<PayloadType = any>(reducer: string | Reducer) {
     if (typeof reducer === 'string') {
       return this.runner<PayloadType>(this.reducer(reducer));
     }
