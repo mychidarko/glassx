@@ -225,3 +225,9 @@ changeCount('increment');
 ```
 
 Find the documentation for reducers [here](https://github.com/mychidarko/glassx/wiki/Reducers)
+
+## Plugins
+
+GlassX allows you to extend its functionality using what we call plugins. Plugins are basically classes that implement GlassX's `Plugin` interface. The GlassX package comes pre-packaged with a `PersistedState` plugin which allows you to cache your global state to your storage of choice in real-time.
+
+Find the plugin docs [here](https://github.com/mychidarko/glassx/wiki/Plugins)
