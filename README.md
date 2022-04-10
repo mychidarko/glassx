@@ -4,6 +4,17 @@ GlassX is a simple context based state management library for React and React Na
 
 GlassX is based on Reactn by Charles Stover but is more tailored towards speed building from the ground up and polished with modern react. It has a ton of handy features with a minimal learning curve which makes it perfect for everyone.
 
+## Installation
+
+You can add GlassX to your project using npm or yarn:
+
+```sh
+yarn add glassx
+
+# or with npm
+npm install glassx
+```
+
 ## Features
 
 ### No boilerplate
