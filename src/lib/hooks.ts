@@ -17,9 +17,17 @@ export function useStore<StateType = any>(
   const stateSetter: SetStoreFn<StateType> = value => {
     if (typeof value === 'function') {
       const callableState = value as (prevState: StateType) => State;
-      setState(callableState(state));
+      const finalState = callableState(state);
+
+      setState(finalState);
+
+      GlassX.applyPluginHook('onSave', finalState);
     } else {
       setState(value);
+      GlassX.applyPluginHook(
+        'onSave',
+        item ? { ...state, [item]: value } : { ...state, ...value }
+      );
     }
   };
 
