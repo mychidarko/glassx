@@ -90,7 +90,7 @@ export default class GlassX {
     });
   }
 
-  protected static applyPluginHook(hook: Hook, params: any) {
+  public static applyPluginHook(hook: Hook, params: any) {
     this.plugins.forEach(plugin => {
       plugin[hook] && plugin[hook]!(params);
     });
