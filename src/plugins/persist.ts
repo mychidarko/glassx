@@ -35,12 +35,12 @@ class PersistedState implements Plugin {
     }
   }
 
-  public retrieveState() {
+  public async retrieveState() {
     if (!this.isReactNative() && isSSR) {
       return;
     }
 
-    const value: string | null = this.storage.getItem(this.key);
+    const value: string | null = await this.storage.getItem(this.key);
 
     if (!value) {
       return undefined;
