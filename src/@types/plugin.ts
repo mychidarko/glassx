@@ -20,3 +20,5 @@ export interface PluginClass {
   onReducerInvoke?: (value: State) => any;
   onReset?: (value: State) => any;
 }
+
+export type Plugin = PluginClass | (new () => PluginClass);

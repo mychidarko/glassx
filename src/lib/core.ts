@@ -1,7 +1,7 @@
 import { getGlobal, setGlobal, useGlobal } from 'reactn';
 import { InternalOptions } from './../@types/core';
 import { SetStateAction } from 'react';
-import { Hook, PluginClass } from '../@types/plugin';
+import { Hook, Plugin, PluginClass } from '../@types/plugin';
 import { Reducer, Reducers, SetStoreFn } from '../@types/functions';
 import { Options, State, Module } from '../@types/core';
 
@@ -22,7 +22,7 @@ export default class GlassX {
     let state = options?.state || {};
     let reducers: Reducers = options?.reducers || {};
     let modules: Module[] = options?.modules || [];
-    const plugins: PluginClass[] = options?.plugins || [];
+    const plugins: Plugin[] = options?.plugins || [];
 
     this._options.compareState = options?.compareState || false;
 
@@ -78,7 +78,7 @@ export default class GlassX {
     this.applyPluginHook('onReady', state);
   }
 
-  protected static pluginInit(plugins: PluginClass[]) {
+  protected static pluginInit(plugins: Plugin[]) {
     plugins.forEach((plugin: any) => {
       if (typeof plugin === 'object') {
         this.plugins.push(plugin);

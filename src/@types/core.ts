@@ -1,6 +1,6 @@
 import { Context } from 'react';
 import { Reducers } from './functions';
-import { PluginClass } from './plugin';
+import { Plugin } from './plugin';
 
 export type State = Record<string, any>;
 export type SyncGlobalState<Type = State> = null | Partial<Type> | void;
@@ -19,7 +19,7 @@ export type Options = {
   state?: State;
   reducers?: Reducers;
   modules?: Module[];
-  plugins?: PluginClass[];
+  plugins?: Plugin[];
   compareState?: boolean;
 };
 
