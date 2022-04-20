@@ -13,7 +13,7 @@ export type Hook =
   | 'onReducerInvoke'
   | 'onReset';
 
-export interface Plugin {
+export interface PluginClass {
   onReady?: (value: State) => any;
   onSave?: (value: State) => any;
   onRead?: (value: State) => any;

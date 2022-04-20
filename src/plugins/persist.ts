@@ -1,10 +1,10 @@
 import GlassX from '..';
 import { State } from '../@types/core';
-import { PersistPluginOptions, Plugin } from '../@types/plugin';
+import { PersistPluginOptions, PluginClass } from '../@types/plugin';
 
 const isSSR = typeof window === 'undefined';
 
-class PersistedState implements Plugin {
+class PersistedState implements PluginClass {
   protected _options: Required<PersistPluginOptions> = {
     storage: !isSSR && window.localStorage,
     key: 'glassx',
