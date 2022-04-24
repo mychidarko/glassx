@@ -216,7 +216,7 @@ export default class GlassX {
   }
 
   private static runner<PayloadType = any>(reducer: Reducer) {
-    return async (payload: PayloadType) => {
+    return async (payload?: PayloadType) => {
       const state = reducer(this.get(), payload);
       this.set(await state);
     };
