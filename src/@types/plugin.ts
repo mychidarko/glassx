@@ -4,6 +4,7 @@ export interface PersistPluginOptions {
   storage?: any;
   key?: string;
   env?: 'react' | 'react-native';
+  exclude?: string[];
 };
 
 export type Hook =

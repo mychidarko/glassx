@@ -8,20 +8,21 @@ class PersistedState implements PluginClass {
   protected _options: Required<PersistPluginOptions> = {
     storage: !isSSR && window.localStorage,
     key: 'glassx',
-    env: 'react'
+    env: 'react',
+    exclude: []
   };
 
   public constructor(options?: PersistPluginOptions) {
     if (options) {
       this._options = {
         ...this._options,
-        ...options,
-      }
+        ...options
+      };
     }
   }
 
   private isReactNative() {
-    return this._options.env === "react-native";
+    return this._options.env === 'react-native';
   }
 
   public setStorage(storage: any) {
@@ -37,7 +38,9 @@ class PersistedState implements PluginClass {
       return;
     }
 
-    const value: string | null = await this._options.storage.getItem(this._options.key);
+    const value: string | null = await this._options.storage.getItem(
+      this._options.key
+    );
 
     if (!value) {
       return undefined;
@@ -66,7 +69,16 @@ class PersistedState implements PluginClass {
       return;
     }
 
-    return await this._options.storage.setItem(this._options.key, JSON.stringify(state));
+    this._options.exclude.forEach(item => {
+      if (state[item]) {
+        delete state[item];
+      }
+    });
+
+    return await this._options.storage.setItem(
+      this._options.key,
+      JSON.stringify(state)
+    );
   }
 
   public async compareState(state: State | string) {
@@ -85,7 +97,7 @@ class PersistedState implements PluginClass {
   }
 
   public async onSave(state: State) {
-    if (!await this.compareState(state)) {
+    if (!(await this.compareState(state))) {
       this.setState(state);
     }
   }
