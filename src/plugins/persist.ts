@@ -6,7 +6,7 @@ const isSSR = typeof window === 'undefined';
 
 class PersistedState implements PluginClass {
   protected _options: Required<PersistPluginOptions> = {
-    storage: !isSSR && window.localStorage,
+    storage: (!isSSR && window.localStorage) as any,
     key: 'glassx',
     env: 'react',
     exclude: []
@@ -38,7 +38,7 @@ class PersistedState implements PluginClass {
       return;
     }
 
-    const value: string | null = await this._options.storage.getItem(
+    const value = await this._options.storage?.getItem?.(
       this._options.key
     );
 
@@ -75,7 +75,7 @@ class PersistedState implements PluginClass {
       }
     });
 
-    return await this._options.storage.setItem(
+    return await this._options.storage?.setItem?.(
       this._options.key,
       JSON.stringify(state)
     );
@@ -87,7 +87,7 @@ class PersistedState implements PluginClass {
     }
 
     state = JSON.stringify(state);
-    const cache = await this._options.storage.getItem(this._options.key);
+    const cache = await this._options.storage?.getItem?.(this._options.key);
     return state === cache;
   }
 

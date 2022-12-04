@@ -1,11 +1,13 @@
 import { State } from './core';
 
+export interface StorageClass extends Storage {}
+
 export interface PersistPluginOptions {
-  storage?: any;
+  storage?: Partial<StorageClass>;
   key?: string;
   env?: 'react' | 'react-native';
   exclude?: string[];
-};
+}
 
 export type Hook =
   | 'onReady'
