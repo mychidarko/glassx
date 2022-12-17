@@ -1,9 +1,10 @@
+import { useEffect, SetStateAction } from 'react';
 import { getGlobal, setGlobal, useGlobal } from 'reactn';
+
 import { InternalOptions } from './../@types/core';
-import { SetStateAction } from 'react';
+import { Options, State, Module } from '../@types/core';
 import { Hook, Plugin, PluginClass } from '../@types/plugin';
 import { Reducer, Reducers, SetStoreFn } from '../@types/functions';
-import { Options, State, Module } from '../@types/core';
 
 export default class GlassX {
   private static plugins: PluginClass[] = [];
@@ -132,7 +133,10 @@ export default class GlassX {
     return setGlobal(finalState);
   }
 
-  public static useStore<StateType = any>(item?: string): any {
+  public static useStore<StateType = any>(
+    item?: string,
+    callback?: (value: any) => any
+  ): any {
     const [state, setState] = useGlobal<any, any>(item);
 
     const stateSetter: SetStoreFn<StateType> = value => {
@@ -145,6 +149,12 @@ export default class GlassX {
 
       GlassX.applyPluginHook('onSave', GlassX.get());
     };
+
+    useEffect(() => {
+      if (typeof callback === 'function') {
+        callback?.(state);
+      }
+    }, [state]);
 
     return [state, stateSetter];
   }

@@ -1,6 +1,7 @@
 import { Context } from 'react';
-import { Reducers } from './functions';
+
 import { Plugin } from './plugin';
+import { Reducers } from './functions';
 
 export type State = Record<string, any>;
 export type SyncGlobalState<Type = State> = null | Partial<Type> | void;

@@ -1,17 +1,20 @@
+import { SetStateAction } from 'react';
+
 import GlassX from './core';
 import { State } from './../@types/core';
 import { SetStoreFn, Reducer } from './../@types/functions';
-import { SetStateAction } from 'react';
 
 export function useStore<StateType = any>(): [State, SetStoreFn<State>];
 export function useStore<StateType = any>(
-  item: string
+  item: string,
+  callback?: (value: StateType) => any
 ): [StateType, SetStoreFn<StateType>];
 
 export function useStore<StateType = any>(
-  item?: string
+  item?: string,
+  callback?: (value: StateType) => any
 ): [StateType, SetStoreFn<StateType>] {
-  return GlassX.useStore(item);
+  return GlassX.useStore(item, callback);
 }
 
 export function useReducer<PayloadType = any>(
