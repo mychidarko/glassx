@@ -1,5 +1,7 @@
 # GlassX
 
+**GLASSX HAS BEEN DEPRECATED, PLS USE [HANA Store](https://github.com/leafsphp/hana) INSTEAD. THANKS.**
+
 GlassX is a simple context based state management library for React and React Native. It provides simple hooks and classes to get you started right away. No need for initializing a context or any such thing. Just start writing and reading your state.
 
 GlassX is based on Reactn by Charles Stover but is more tailored towards speed building from the ground up and polished with modern react. It has a ton of handy features with a minimal learning curve which makes it perfect for everyone.
